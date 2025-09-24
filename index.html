@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Agent Performance Dashboard (v6.0)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+
+<body class="loading">
+  <!-- TOP LOADER BAR -->
+  <div id="loader" aria-live="polite" aria-busy="true">
+    <div class="spinner"></div>
+    <div class="loadbar" aria-hidden="true"><span id="loadbar-fill"></span></div>
+    <div id="loadtext">Fetching data…</div>
+  </div>
+
+  <div class="wrap">
+    <!-- ======= HEADER ======= -->
+    <div class="section-title">
+      <div>
+        <h1 id="company">—</h1>
+        <div class="hint">Last updated on: <span id="last-updated">—</span></div>
+      </div>
+      <div style="display:flex; gap:10px; align-items:center">
+        <div class="pill" id="agent-pill">Agent: <strong id="agent-pill-name">All</strong></div>
+        <div class="pill" id="metric-pill">Metric: <strong id="metric-pill-name">Reply %</strong></div>
+        <div class="pill" id="range-pill">Range: <strong id="range-pill-name">Last 24 Hours</strong></div>
+        <button class="btn" id="refresh-btn">Refresh metrics</button>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- ======= CONTROLS ======= -->
+    <div class="controls" id="controls">
+      <div class="ctrl small">
+        <div class="label">Range</div>
+        <select id="range-select" aria-label="Select time range">
+          <option value="24h">Last 24 Hours</option>
+          <option value="7d">Last 7 Days</option>
+          <option value="30d">Last 30 Days</option>
+          <option value="90d">Last 90 Days</option>
+        </select>
+      </div>
+      <div class="ctrl small">
+        <div class="label">Agent</div>
+        <select id="agent-select" aria-label="Select agent"></select>
+      </div>
+      <div class="ctrl small">
+        <div class="label">Quick</div>
+        <button class="btn" id="show-all">Show All</button>
+      </div>
+    </div>
+
+    <!-- Keys -->
+    <div class="keys" id="keys-row"></div>
+
+    <!-- KPIs -->
+    <div class="grid-kpi afterload-pop">
+      <div class="kpi" id="kpi-contacted-card"><h4>Prospects contacted</h4><div class="big" id="kpi-contacted">0</div></div>
+      <div class="kpi" id="kpi-replies-card"><h4>Replies</h4><div class="big" id="kpi-replies">0</div><div class="pillline">Reply %: <strong id="kpi-replyPct">0%</strong></div></div>
+      <div class="kpi" id="kpi-leads-card"><h4>Appointments / Leads</h4><div class="big" id="kpi-leads">0</div><div class="pillline">Replies → Appt/Lead %: <strong id="kpi-r2l">0%</strong></div></div>
+      <div class="kpi" id="kpi-sold-card"><h4>Closed</h4><div class="big" id="kpi-sold">0</div><div class="pillline">Appt/Lead → Close %: <strong id="kpi-l2c">0%</strong></div></div>
+    </div>
+
+    <!-- TOP: Agent performance -->
+    <div class="card" id="chart-card">
+      <div class="chart-header">
+        <div>
+          <div class="chart-title" id="main-chart-title">—</div>
+          <div class="chart-sub" id="main-chart-sub">—</div>
+        </div>
+        <div class="chart-ctrls">
+          <span class="info" data-tip="Pick the metric to compare (affects KPI glow + chart).">i</span>
+          <div class="label">Metric</div>
+          <select id="metric-select-top" aria-label="Select metric for top chart"></select>
+          <span class="info" data-tip="Switch the visualization for the agent chart.">i</span>
+          <div class="label">View as</div>
+          <select id="chart-select-top" aria-label="Select chart type">
+            <option value="funnel">Funnel</option>
+            <option value="bar">Bar (vertical)</option>
+            <option value="bar-h">Bar (horizontal)</option>
+            <option value="donut">Donut</option>
+            <option value="line">Line</option>
+          </select>
+        </div>
+      </div>
+      <div id="main-chart"></div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- BOTTOM: Sales pipeline performance -->
+    <div class="section">
+      <div class="chart-header" style="margin-bottom:4px">
+        <div>
+          <div class="chart-title" id="pipe-title">Sales pipeline performance</div>
+          <div class="chart-sub" id="pipe-sub">—</div>
+        </div>
+        <div c
